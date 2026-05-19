@@ -58,6 +58,11 @@ def load_data(ticker):
     if data.empty:
         st.error(f"Failed to fetch data for {ticker}. The Yahoo Finance API is currently rate-limiting this server. Please try again later!")
         st.stop()
+    
+    # Modern yfinance returns MultiIndex columns like ('Close', 'GOOG').
+    # Flatten them to simple column names like 'Close'.
+    if isinstance(data.columns, pd.MultiIndex):
+        data.columns = data.columns.get_level_values(0)
         
     data.reset_index(inplace=True)
     # Format the date to be more readable

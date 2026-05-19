@@ -4,3 +4,4 @@ prophet
 streamlit
 yfinance
 numpy
+scikit-learn

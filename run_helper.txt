@@ -10,3 +10,14 @@ plotly==5.22.0
 prophet==1.1.5
 streamlit==1.36.0
 yfinance==0.2.40
+
+
+to change something:
+
+
+Go to Directory
+git commit .
+Update requirements and run helper scripts
+Press 'Esc'
+Type :wq and press Enter to write the changes and quit.
+git push -u origin master

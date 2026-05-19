@@ -1,12 +1,12 @@
 import streamlit as st
 from datetime import date
-import yfinance as yf  # Library for fetching stock data
-from prophet import Prophet  # Prophet forecasting model
-from prophet.plot import plot_plotly  # Plotting function for Prophet
-from plotly import graph_objs as go  # Plotly for interactive plots
-import pandas as pd  # Data manipulation library
-
-
+import yfinance as yf
+from prophet import Prophet
+from prophet.plot import plot_plotly
+from plotly import graph_objs as go
+import pandas as pd
+from sklearn.metrics import mean_absolute_percentage_error, mean_squared_error
+import numpy as np
 
 # Define the start date for historical data and today's date
 START = "2016-01-01"
@@ -137,3 +137,20 @@ st.markdown("""
 """, unsafe_allow_html=True)
 fig2 = m.plot_components(forecast)
 st.write(fig2)
+
+# Filter the forecast to match the historical data length for comparison
+historical_forecast = forecast[forecast['ds'] <= last_date]
+
+# Calculate MAPE
+mape = mean_absolute_percentage_error(data['Close'], historical_forecast['yhat'])
+
+# Calculate RMSE
+rmse = np.sqrt(mean_squared_error(data['Close'], historical_forecast['yhat']))
+
+# Display MAPE and RMSE
+st.subheader('Model Performance Metrics')
+st.markdown(f"""
+<span style="color:#1F77B4; font-size:1.1em;">The following metrics indicate the efficiency of the forecasting model:</span>
+""", unsafe_allow_html=True)
+st.write(f"**MAPE:** {mape:.2%}")
+st.write(f"**RMSE:** {rmse:.2f}")

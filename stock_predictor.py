@@ -50,8 +50,20 @@ period = n_years * 365  # Convert years to days for Prophet forecast period
 # Function to load data
 @st.cache_data
 def load_data(ticker):
+    # Use a custom session with a User-Agent to avoid rate limits on cloud platforms
+    import requests
+    session = requests.Session()
+    session.headers.update({
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    })
+    
     # Download historical stock data from Yahoo Finance
-    data = yf.download(ticker, START, TODAY)
+    data = yf.download(ticker, START, TODAY, session=session)
+    
+    if data.empty:
+        st.error(f"Failed to fetch data for {ticker}. The Yahoo Finance API might be rate-limiting us.")
+        st.stop()
+        
     data.reset_index(inplace=True)
     # Format the date to be more readable
     data['Date'] = data['Date'].dt.date

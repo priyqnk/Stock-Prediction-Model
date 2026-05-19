@@ -37,7 +37,7 @@ Stock-Prediction-Model/
 
 ### Prerequisites
 
-- Python 3.8+ (see `runtime.txt` for the pinned version used in deployment)
+- Python 3.10+ (see `runtime.txt` for the pinned version used in deployment)
 
 ### Installation
 
